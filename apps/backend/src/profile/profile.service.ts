@@ -6,10 +6,10 @@ import { UserRepository } from '../user/user.repository';
 
 @Injectable()
 export class ProfileService {
-  constructor(private readonly userRepository: UserRepository, private readonly em: EntityManager) {}
+  constructor(private readonly userRepository: UserRepository, private readonly em: EntityManager) { }
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.findAll();
+    return this.userRepository.findAll({ populate: ['followers', 'additionalArticles', 'authoredArticles'] });
   }
 
   async findOne(options?: FilterQuery<User>): Promise<IProfileRO> {
@@ -31,7 +31,7 @@ export class ProfileService {
     const foundProfile = await this.userRepository.findOne(
       { username: followingUsername },
       {
-        populate: ['followers'],
+        populate: ['followers', 'additionalArticles', 'authoredArticles'],
       },
     );
     const follower = this.userRepository.getReference(id);

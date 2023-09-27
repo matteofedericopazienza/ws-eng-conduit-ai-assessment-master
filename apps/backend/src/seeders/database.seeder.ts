@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/core';
+import { Collection, EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { Article } from '../article/article.entity';
 import { Tag } from '../tag/tag.entity';
@@ -26,6 +26,8 @@ export class DatabaseSeeder extends Seeder {
         favoritesCount: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
+        additionalAuthors: [],
+        isLocked: false,
       }),
       em.create(Article, {
         author: authors.zolly,
@@ -37,6 +39,9 @@ export class DatabaseSeeder extends Seeder {
         favoritesCount: 7,
         createdAt: new Date(),
         updatedAt: new Date(),
+        additionalAuthors: [authors.john],
+        isLocked: false,
+
       }),
     ];
     em.persist(articles);
@@ -59,6 +64,8 @@ export class DatabaseSeeder extends Seeder {
         bio: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.',
         image: 'http://dummyimage.com/168x100.png/5fa2dd/ffffff',
         password: 'e56a207acd1e6714735487c199c6f095844b7cc8e5971d86c003a7b6f36ef51e', // password
+        additionalArticles: [],
+        authoredArticles: [],
       }),
       bennie: em.create(User, {
         email: 'bbebbell1@earthlink.net',
@@ -66,6 +73,8 @@ export class DatabaseSeeder extends Seeder {
         bio: 'Suspendisse potenti.',
         image: 'http://dummyimage.com/150x100.png/ff4444/ffffff',
         password: 'e56a207acd1e6714735487c199c6f095844b7cc8e5971d86c003a7b6f36ef51e',
+        additionalArticles: [],
+        authoredArticles: [],
       }),
       zolly: em.create(User, {
         email: 'zgorey2@livejournal.com',
@@ -73,7 +82,10 @@ export class DatabaseSeeder extends Seeder {
         bio: 'In eleifend quam a odio. In hac habitasse platea dictumst.',
         image: 'http://dummyimage.com/186x100.png/5fa2dd/ffffff',
         password: 'e56a207acd1e6714735487c199c6f095844b7cc8e5971d86c003a7b6f36ef51e',
+        additionalArticles: [],
+        authoredArticles: [],
       }),
     };
   }
 }
+

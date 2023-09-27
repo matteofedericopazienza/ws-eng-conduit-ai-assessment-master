@@ -13,14 +13,14 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [FooterComponent, NavbarComponent, RouterModule, CommonModule],
+  imports: [FooterComponent, NavbarComponent, RouterModule, CommonModule,],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   user$ = this.store.select(selectUser);
   isLoggedIn$ = this.store.select(selectLoggedIn);
 
-  constructor(private readonly store: Store, private readonly localStorageJwtService: LocalStorageJwtService) {}
+  constructor(private readonly store: Store, private readonly localStorageJwtService: LocalStorageJwtService) { }
 
   ngOnInit() {
     this.localStorageJwtService

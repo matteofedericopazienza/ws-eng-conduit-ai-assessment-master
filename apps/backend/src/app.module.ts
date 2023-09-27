@@ -14,7 +14,7 @@ import ormConfig from '../mikro-orm.config';
   providers: [],
 })
 export class AppModule implements NestModule, OnModuleInit {
-  constructor(private readonly orm: MikroORM) {}
+  constructor(private readonly orm: MikroORM) { }
 
   async onModuleInit(): Promise<void> {
     await this.orm.getMigrator().up();

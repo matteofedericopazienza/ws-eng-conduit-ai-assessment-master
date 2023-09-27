@@ -9,6 +9,7 @@ export const articleEditResolver: ResolveFn<boolean> = (route: ActivatedRouteSna
   const store = inject(Store);
 
   if (slug) {
+
     store.dispatch(articleActions.loadArticle({ slug }));
   }
 

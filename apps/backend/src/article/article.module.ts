@@ -7,11 +7,12 @@ import { ArticleController } from './article.controller';
 import { Article } from './article.entity';
 import { ArticleService } from './article.service';
 import { Comment } from './comment.entity';
+import { TagService } from '../tag/tag.service';
 import { Tag } from '../tag/tag.entity';
 
 @Module({
   controllers: [ArticleController],
-  imports: [MikroOrmModule.forFeature({ entities: [Article, Comment, User, Tag] }), UserModule,],
+  imports: [MikroOrmModule.forFeature({ entities: [Article, Comment, User, Tag] }), UserModule],
   providers: [ArticleService],
 })
 export class ArticleModule implements NestModule {
@@ -27,6 +28,7 @@ export class ArticleModule implements NestModule {
         { path: 'articles/:slug/comments/:id', method: RequestMethod.DELETE },
         { path: 'articles/:slug/favorite', method: RequestMethod.POST },
         { path: 'articles/:slug/favorite', method: RequestMethod.DELETE },
+        { path: 'articles/:slug/lock', method: RequestMethod.PUT },
       );
   }
 }

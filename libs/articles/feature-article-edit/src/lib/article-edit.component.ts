@@ -5,6 +5,7 @@ import { Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { articleActions, articleEditActions, articleQuery } from '@realworld/articles/data-access';
+import { ApiService } from '@realworld/core/http-client/src';
 
 const structure: Field[] = [
   {
@@ -31,6 +32,15 @@ const structure: Field[] = [
     placeholder: 'Enter Tags',
     validator: [],
   },
+  {
+    type: 'INPUT',
+    name: 'additionalAuthorsEmail',
+    placeholder: 'Enter Additional Authors',
+    validator: [],
+    enabled: false,
+
+
+  },
 ];
 
 @UntilDestroy()
@@ -46,15 +56,23 @@ export class ArticleEditComponent implements OnInit, OnDestroy {
   structure$ = this.store.select(ngrxFormsQuery.selectStructure);
   data$ = this.store.select(ngrxFormsQuery.selectData);
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) { }
 
   ngOnInit() {
     this.store.dispatch(formsActions.setStructure({ structure }));
 
+
+
     this.store
       .select(articleQuery.selectData)
       .pipe(untilDestroyed(this))
-      .subscribe((article) => this.store.dispatch(formsActions.setData({ data: article })));
+      .subscribe((article) => {
+        if (article.isLocked == false) {
+          this.store.dispatch(formsActions.setData({ data: article }))
+        } else {
+          this.store.dispatch(formsActions.setErrors({ errors: { title: 'Article is locked' } }));
+        }
+      });
   }
 
   updateForm(changes: any) {

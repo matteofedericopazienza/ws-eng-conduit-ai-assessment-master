@@ -42,7 +42,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   currentUser$ = this.store.select(selectUser);
   touchedForm$ = this.store.select(ngrxFormsQuery.selectTouched);
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) { }
 
   ngOnInit() {
     this.store.dispatch(formsActions.setStructure({ structure }));

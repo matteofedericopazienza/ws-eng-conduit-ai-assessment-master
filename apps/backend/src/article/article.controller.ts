@@ -9,7 +9,7 @@ import { CreateArticleDto, CreateCommentDto } from './dto';
 @ApiTags('articles')
 @Controller('articles')
 export class ArticleController {
-  constructor(private readonly articleService: ArticleService) {}
+  constructor(private readonly articleService: ArticleService) { }
 
   @ApiOperation({ summary: 'Get all articles' })
   @ApiResponse({ status: 200, description: 'Return all articles.' })
@@ -30,6 +30,7 @@ export class ArticleController {
   async findOne(@User('id') userId: number, @Param('slug') slug: string): Promise<IArticleRO> {
     return this.articleService.findOne(userId, { slug });
   }
+
 
   @Get(':slug/comments')
   async findComments(@Param('slug') slug: string): Promise<ICommentsRO> {
@@ -55,6 +56,20 @@ export class ArticleController {
   ) {
     // Todo: update slug also when title gets changed
     return this.articleService.update(+user, params.slug, articleData);
+  }
+
+
+  @ApiOperation({ summary: 'Lock article' })
+  @ApiResponse({ status: 201, description: 'The article has been successfully locked.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @Put(':slug/lock')
+  async lockArticle(
+    @User('id') user: number,
+    @Param() params: Record<string, string>,
+    @Body('article') articleData: CreateArticleDto,
+  ) {
+    // Todo: update slug also when title gets changed
+    return this.articleService.lockArticle(+user, params.slug, articleData);
   }
 
   @ApiOperation({ summary: 'Delete article' })

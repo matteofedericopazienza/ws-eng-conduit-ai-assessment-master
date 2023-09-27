@@ -7,6 +7,7 @@ export interface Field {
   placeholder?: string;
   validator?: ValidatorFn[];
   attrs?: any;
+  enabled?: boolean;
 }
 
 export type FieldType = 'INPUT' | 'TEXTAREA';

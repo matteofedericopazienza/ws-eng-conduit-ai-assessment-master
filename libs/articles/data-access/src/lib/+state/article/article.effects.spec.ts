@@ -31,7 +31,8 @@ const mockArticle: Article = {
     image: 'http://localhost:3000/images/demo-avatar.png',
     following: false,
     loading: false,
-  },
+  }, additionalAuthors: [],
+  isLocked: false,
 };
 
 const mockComments: Array<Comment> = [

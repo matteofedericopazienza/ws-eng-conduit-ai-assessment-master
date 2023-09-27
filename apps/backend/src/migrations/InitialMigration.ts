@@ -2,6 +2,22 @@ import { Migration } from '@mikro-orm/migrations';
 
 export class InitialMigration extends Migration {
   async up(): Promise<void> {
+
+    // this.addSql(
+    //   'create table `user_additional_articles` (`id` int unsigned not null auto_increment primary key, `user_id` int unsigned not null, `article_id` int unsigned not null) default character set utf8mb4 engine = InnoDB;',
+    // );
+
+
+    this.addSql('create table user_additional_articles (user_id int unsigned not null, article_id int unsigned not null) default character set utf8mb4 engine = InnoDB;');
+    this.addSql('alter table user_additional_articles add index user_additional_articles_user_id_index(user_id);');
+    this.addSql('alter table user_additional_articles add index user_additional_articles_article_id_index(article_id);');
+    this.addSql('alter table user_additional_articles add primary key user_additional_articles_pkey(user_id, article_id);');
+    this.addSql('alter table user_additional_articles add constraint user_additional_articles_user_id_foreign foreign key (user_id) references user (id) on update cascade on delete cascade;');
+    this.addSql('alter table user_additional_articles add constraint user_additional_articles_article_id_foreign foreign key (article_id) references article (id) on update cascade on delete cascade;');
+
+
+
+
     this.addSql(
       'create table `user` (`id` int unsigned not null auto_increment primary key, `username` varchar(255) not null, `email` varchar(255) not null, `bio` varchar(255) not null, `image` varchar(255) not null, `password` varchar(255) not null) default character set utf8mb4 engine = InnoDB;',
     );
@@ -59,5 +75,14 @@ export class InitialMigration extends Migration {
     this.addSql(
       'alter table `user_favorites` add constraint `user_favorites_article_id_foreign` foreign key (`article_id`) references `article` (`id`) on update cascade on delete cascade;',
     );
+
+
+
+
+    this.addSql('alter table article add is_locked boolean not null default false;');
+
+
+
+
   }
 }

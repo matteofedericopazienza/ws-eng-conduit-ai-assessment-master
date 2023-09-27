@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   EntityDTO,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryKey,
@@ -13,6 +14,7 @@ import slug from 'slug';
 
 import { User } from '../user/user.entity';
 import { Comment } from './comment.entity';
+import { getAdditionalAuthors } from '../../../../libs/articles/data-access/src/lib/+state/article/article.selectors';
 
 @Entity()
 export class Article {
@@ -31,7 +33,7 @@ export class Article {
   @Property()
   body = '';
 
-  @Property({ type: 'date' })
+  @Property({ type: 'date', onUpdate: () => new Date() })
   createdAt = new Date();
 
   @Property({ type: 'date', onUpdate: () => new Date() })
@@ -43,24 +45,36 @@ export class Article {
   @ManyToOne(() => User)
   author: User;
 
+
+  @ManyToMany(() => User, user => user.additionalArticles)
+  //@JoinTable({ name: 'article_user' }) // Specify the join table name
+  additionalAuthors = new Collection<User>(this);
+
+  @Property({ type: 'boolean' })
+  isLocked = false;
+
   @OneToMany(() => Comment, (comment) => comment.article, { eager: true, orphanRemoval: true })
   comments = new Collection<Comment>(this);
 
   @Property({ type: 'number' })
   favoritesCount = 0;
 
-  constructor(author: User, title: string, description: string, body: string) {
+  constructor(author: User, title: string, description: string, body: string, additionalAuthors: User[] = []) {
     this.author = author;
     this.title = title;
     this.description = description;
     this.body = body;
+    this.additionalAuthors = new Collection<User>(this, additionalAuthors); // Initialize with additionalAuthors directly
     this.slug = slug(title, { lower: true }) + '-' + ((Math.random() * Math.pow(36, 6)) | 0).toString(36);
   }
+
 
   toJSON(user?: User) {
     const o = wrap<Article>(this).toObject() as ArticleDTO;
     o.favorited = user && user.favorites.isInitialized() ? user.favorites.contains(this) : false;
     o.author = this.author.toJSON(user);
+    o.additionalAuthors = this.additionalAuthors && this.additionalAuthors.isInitialized() ? this.additionalAuthors.getItems().map(author => author.toJSON(user)) : [];
+    o.additionalAuthorsEmail = this.additionalAuthors && this.additionalAuthors.isInitialized() ? this.additionalAuthors.getItems().map(author => author.email) : [];
 
     return o;
   }
@@ -68,4 +82,6 @@ export class Article {
 
 export interface ArticleDTO extends EntityDTO<Article> {
   favorited?: boolean;
+  additionalAuthorsEmail?: String[];
+
 }

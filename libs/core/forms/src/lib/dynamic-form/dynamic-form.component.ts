@@ -23,7 +23,7 @@ export class DynamicFormComponent implements OnInit {
   @Output() updateForm: EventEmitter<any> = new EventEmitter();
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.structure$

@@ -23,6 +23,7 @@ export const ARTICLE_EDIT_ROUTES: Routes = [
         component: ArticleEditComponent,
         resolve: { articleEditResolver },
       },
+
     ],
   },
 ];

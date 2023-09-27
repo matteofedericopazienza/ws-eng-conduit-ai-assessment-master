@@ -9,9 +9,13 @@ export interface ArticleState {
   comments: Comment[];
   loading: boolean;
   loaded: boolean;
+  article: Article | null;
+  isLocked: boolean;
 }
 
 export const articleInitialState: ArticleState = {
+  article: null,
+  isLocked: false,
   data: {
     slug: '',
     title: '',
@@ -29,6 +33,9 @@ export const articleInitialState: ArticleState = {
       following: false,
       loading: false,
     },
+    isLocked: false,
+    additionalAuthors: [],
+
   },
   comments: [],
   loaded: false,
@@ -44,6 +51,7 @@ export const articleFeature = createFeature({
       data: action.article,
       loaded: true,
       loading: false,
+      isLocked: true,
     })),
     on(articleActions.loadArticleFailure, (state) => ({
       ...state,
@@ -81,5 +89,12 @@ export const articleFeature = createFeature({
       ...state,
       data: action.article,
     })),
+    on(articleActions.loadArticleSuccess, (state, { article }) => ({
+      ...state,
+      article,
+      isLocked: true,
+    })),
+
   ),
 });
+

@@ -48,6 +48,10 @@ export const appConfig: ApplicationConfig = {
         path: 'profile',
         loadChildren: () => import('@realworld/profile/feature-profile').then((profile) => profile.PROFILE_ROUTES),
       },
+      {
+        path: 'roaster',
+        loadChildren: () => import('@realworld/roaster/feature-roaster').then((roaster) => roaster.ROASTER_ROUTES),
+      },
     ]),
     provideStore({
       auth: authFeature.reducer,

@@ -27,9 +27,12 @@ export class ArticleService {
 
   async findAll(userId: number, query: Record<string, string>): Promise<IArticlesRO> {
     const user = userId
-      ? await this.userRepository.findOne(userId, { populate: ['followers', 'favorites'] })
+      ? await this.userRepository.findOne(userId, { populate: ['followers', 'favorites',] })
       : undefined;
-    const qb = this.articleRepository.createQueryBuilder('a').select('a.*').leftJoin('a.author', 'u');
+
+    const qb = this.articleRepository.createQueryBuilder('a')
+      .select('a.*')
+      .leftJoinAndSelect('a.author', 'author');
 
     if ('tag' in query) {
       qb.andWhere({ tagList: new RegExp(query.tag) });
@@ -37,7 +40,6 @@ export class ArticleService {
 
     if ('author' in query) {
       const author = await this.userRepository.findOne({ username: query.author });
-
       if (!author) {
         return { articles: [], articlesCount: 0 };
       }
@@ -72,6 +74,7 @@ export class ArticleService {
 
     return { articles: articles.map((a) => a.toJSON(user!)), articlesCount };
   }
+
 
   async findFeed(userId: number, query: Record<string, string>): Promise<IArticlesRO> {
     const user = userId

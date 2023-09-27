@@ -1,0 +1,30 @@
+<div class="container page">
+  <div class="row">
+    <div class="col-md-10 offset-md-1 col-xs-12">
+
+      <h2 class="mb-4 text-xs-center">Conduit Roaster</h2>
+
+      <table style="width: 100%;">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Profile Link</th>
+            <th>Total Articles Authored</th>
+            <th>Total Likes Received</th>
+            <th>Date of First Article</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userStats">
+            <td>{{ user.username }}</td>
+            <td><a [routerLink]="['/profile', user.username]">Profile</a></td>
+            <td>{{ user.totalArticlesAuthored  }}</td>
+            <td>{{ user.totalLikesReceived  }}</td>
+            <td>{{ user.firstArticleDate  }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

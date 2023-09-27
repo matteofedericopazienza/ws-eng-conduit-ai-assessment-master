@@ -8,6 +8,9 @@
         <a class="nav-link" routerLink="/">Home</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/roaster" routerLinkActive="active">Roaster</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" routerLink="/login" routerLinkActive="active">Sign in</a>
       </li>
       <li class="nav-item">
@@ -19,13 +22,11 @@
     <ul *ngIf="isLoggedIn" class="nav navbar-nav pull-xs-right">
       <li class="nav-item">
         <!-- Add "active" class when you're on that page" -->
-        <a
-          class="nav-link active"
-          [routerLink]="['/']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          >Home</a
-        >
+        <a class="nav-link active" [routerLink]="['/']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/roaster" routerLinkActive="active">Roaster</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/editor" routerLinkActive="active">
@@ -38,12 +39,8 @@
         </a>
       </li>
       <li class="nav-item">
-        <a
-          data-e2e-id="logedin-user"
-          class="nav-link"
-          [routerLink]="['/profile', user.username]"
-          routerLinkActive="active"
-        >
+        <a data-e2e-id="logedin-user" class="nav-link" [routerLink]="['/profile', user.username]"
+          routerLinkActive="active">
           <img [src]="user.image" *ngIf="user.image" class="user-pic" />
           {{ user.username }}
         </a>
